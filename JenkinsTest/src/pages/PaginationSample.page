@@ -1,0 +1,87 @@
+<apex:page standardController="Contact" recordSetVar="contacts" extensions="Pagenation1Controller" showHeader="false">
+ <apex:slds />
+  <div class="slds-scope">
+  	<div class="slds-page-header">
+  
+  		<div class="slds-grid">
+    
+    		<div class="slds-col slds-has-flexi-truncate">
+      
+      			<p class="slds-text-title--caps slds-line-height--reset">Contacts</p>
+      			<h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="Mass Update">Mass Update</h1>
+      
+    		</div>
+    
+  			</div>
+ 
+		</div>
+    </div>
+    <apex:messages />
+
+
+
+   <apex:form id="pg1">
+   <apex:pageBlock mode="inlineEdit">
+      <apex:pageBlockButtons location="bottom">
+       <apex:commandButton action="{!updatePage}" id="clearButton" value="Clear"/>
+       <apex:commandButton action="{!save}" id="saveButton" value="Save"/>
+       <apex:commandButton action="{!cancel}" id="cancelButton" value="Cancel"/>
+    </apex:pageBlockButtons>
+ 	<apex:pageBlockTable value="{!contacts}" var="ct">
+        <apex:column headerValue="Name" width="20%">
+        <apex:outputField value="{!ct.Name}">
+        	<apex:inlineEditSupport disabled="false"/>
+        </apex:outputField>
+        </apex:column>
+        <apex:column headerValue="Title" width="20%">
+        <apex:outputField value="{!ct.Title}">
+            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        event="ondblclick" changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+        </apex:outputField>
+        </apex:column>
+        <apex:column headerValue="Email" width="20%">
+        <apex:outputField value="{!ct.Email}">
+            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        event="ondblclick" changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+        </apex:outputField>
+        </apex:column>
+        <apex:column headerValue="HasOptedOutOfEmail" width="20%">
+        <apex:outputField value="{!ct.HasOptedOutOfEmail}">
+            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        event="ondblclick" changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+        </apex:outputField>
+        </apex:column>
+        <apex:column headerValue="Birthday" width="20%">
+        <apex:outputField value="{!ct.Birthdate}">
+            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" 
+                        event="ondblclick" changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+        </apex:outputField>
+        </apex:column>
+	</apex:pageBlockTable>
+<apex:outputLabel >Total no of recs:{!totalRecords}</apex:outputLabel>
+
+<div align="center">
+ <apex:commandButton value="First Page" action="{!first}" reRender="pg1"/>
+ <apex:commandButton value="PreviousPage" action="{!previous}" reRender="pg1"/>
+ <apex:commandButton value="NextPage" action="{!next}" reRender="pg1"/>
+ <apex:commandButton value="LastPage" action="{!last}" reRender="pg1"/>
+ </div>
+ Display records per page <apex:selectList value="{!recordsPerPage}" size="1" >
+   <apex:selectOption itemLabel="10" itemValue="10"></apex:selectOption>
+   <apex:selectOption itemLabel="20" itemValue="20"></apex:selectOption>
+   <apex:actionSupport event="onchange" reRender="pg1" action="{!updatePage}"/>
+  </apex:selectList><br/>
+ </apex:pageBlock>
+ </apex:form>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $( window ).load(function() {
+        	$("#calYearPicker").html('')
+            for (var i = 1930; i <= 2018; i++)
+            {
+                $("#calYearPicker").append("<option value='" + i +"'>"+i+"</option>");
+            }
+        });
+    </script>
+</apex:page>
